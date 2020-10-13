@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/item_menu_lire_tout"
+        android:title="Tout le plan"
+        android:enabled="true"
+        android:icon="@drawable/ic_agenda"/>
+
+    <item android:id="@+id/item_menu_email"
+        android:enabled="true"
+        android:title="Nous écrire"
+        android:icon="@drawable/ic_action_email"/>
+
+    <item android:id="@+id/item_menu_aide"
+        android:enabled="true"
+        android:title="Aide"
+        android:icon="@drawable/ic_action_help"/>
+</menu>
