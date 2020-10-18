@@ -4,10 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.agnekdev.planlecturebible.TestamentsActivity;
+
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import models.Bible;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -80,5 +89,65 @@ public abstract class Functions {
 
     public static void agnekLog(String content){
         Log.i("adev",content);
+    }
+
+    public static ArrayList<String> getChapters(String rawChapter){
+        ArrayList<String> response= new ArrayList<>();
+        // plusieurs chapitres
+        if(rawChapter.contains(",")){
+            String[] arrayChapters= rawChapter.split(",");
+            String chapterStart =arrayChapters[0];
+            String chapterEnd=arrayChapters[arrayChapters.length-1];
+            response.add(chapterStart);
+            response.add(chapterEnd);
+
+            // 1 chapitre et quelques versets
+        } else if(rawChapter.contains(":")){
+            String[] arrayChapterVerse=rawChapter.split(":");
+            String chapter= arrayChapterVerse[0];
+            String verses=arrayChapterVerse[1];
+
+            String[] arrayVerses = verses.split("-");
+            String verseStart =arrayVerses[0];
+            String verseEnd =arrayVerses[1];
+
+            response.add(chapter);
+            response.add(verseStart);
+            response.add(verseEnd);
+
+            //un chapitre
+        } else {
+            response.add(rawChapter);
+        }
+
+        return response;
+
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++ A utilisser après
+    void searchVersesSystem(Context context){
+
+        List<Bible> bibleList =Bible.searchVerses(context,"Paul","nt");
+        List<String> books= Bible.getBooks();
+
+        Map<String,List<Bible>> map = new HashMap<>();
+        for(String book:books){
+            List<Bible> newBibleList = new ArrayList<>();
+            for(Bible bible:bibleList){
+                if(book.equals(bible.getMorningBook())){
+                    Functions.agnekLog(bible.getMorningBook());
+                    newBibleList.add(bible);
+                }
+            }
+            map.put(book,newBibleList);
+        }
+        //Functions.agnekLog(String.valueOf(books.size()));
+        Functions.agnekLog(map.get("Colossiens").toString());
+    }
+
+    public static String stripAccents(String s) {
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        return s;
     }
 }

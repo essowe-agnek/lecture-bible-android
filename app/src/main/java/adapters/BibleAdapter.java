@@ -1,34 +1,41 @@
 package adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnekdev.planlecturebible.R;
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 
 import java.util.List;
 
 import models.Bible;
-import utilities.Functions;
 
-public class BibleAdapter extends RecyclerView.Adapter<BibleAdapter.BibleHolder>{
+public class BibleAdapter extends RecyclerView.Adapter<BibleAdapter.BibleHolder> {
     List<Bible> bibleList;
     Activity mActivity;
-    public BibleAdapter(Activity activity,List<Bible> bibleList){
+
+    MyCallBack myCallBack;
+
+    public interface MyCallBack{
+        void listenerMethod(int position);
+    }
+    public BibleAdapter(Activity activity,List<Bible> bibleList,MyCallBack myCallBack){
         this.bibleList=bibleList;
         mActivity=activity;
+        this.myCallBack=myCallBack;
 
     }
     @NonNull
@@ -40,10 +47,11 @@ public class BibleAdapter extends RecyclerView.Adapter<BibleAdapter.BibleHolder>
 
     @NonNull
     @Override
-    public void onBindViewHolder(@NonNull BibleHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BibleHolder holder, final int position) {
         final Bible bible=bibleList.get(position);
         holder.mVerse.setText(String.valueOf(bible.getVerse()));
         holder.mversetext.setText(bible.getVerseText());
+        holder.mversetext.setBackgroundColor(bible.getBgColor());
 
         holder.imageViewMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +66,30 @@ public class BibleAdapter extends RecyclerView.Adapter<BibleAdapter.BibleHolder>
                             case R.id.bible_menu_item_share:
                                 Toast.makeText(mActivity,bible.getVerseText(),Toast.LENGTH_LONG).show();
                                 break;
+
+                            case R.id.bible_menu_item_highlight:
+                                ColorPickerDialog.Builder colorPickerDialog=ColorPickerDialog.newBuilder();
+                                colorPickerDialog.setColor(Color.YELLOW).show((FragmentActivity) mActivity);
+
+                                myCallBack.listenerMethod(position);
+                                break;
+
+                            case R.id.bible_menu_item_copy:
+                                final String book = bible.getEveningBook()!=null ? bible.getEveningBook() : bible.getMorningBook();
+                                final int chapter = bible.getChapter();
+                                final int verse= bible.getVerse();
+                                final String verseText = bible.getVerseText();
+                                String passage = String.format("%s %d : %d\n%s",book,chapter,verse,verseText);
+                                if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                                    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                                    clipboard.setText(passage);
+                                } else {
+                                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                                    android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", passage);
+                                    clipboard.setPrimaryClip(clip);
+                                }
+                                Toast.makeText(mActivity,"Verset copié avec succès",Toast.LENGTH_LONG).show();
+                                break;
                         }
                         return false;
                     }
@@ -71,7 +103,6 @@ public class BibleAdapter extends RecyclerView.Adapter<BibleAdapter.BibleHolder>
     public int getItemCount() {
         return bibleList.size();
     }
-
 
     class BibleHolder extends RecyclerView.ViewHolder {
         TextView mVerse;

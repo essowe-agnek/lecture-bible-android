@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BibleActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".ChaptersActivity" />
+        <activity android:name=".BooksActivity" />
+        <activity android:name=".TestamentsActivity" />
+        <activity android:name=".BibleActivity" />
         <activity android:name=".ListeLectureActivity" />
         <activity android:name=".ChoosePlanActivity" />
         <activity android:name=".MainActivity">

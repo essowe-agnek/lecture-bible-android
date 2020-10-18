@@ -53,6 +53,13 @@ public class ListeLectureActivity extends AppCompatActivity {
         mListMois.setSelection(currentMonth);
 
         listeDuMois();
+        goToTodayPostion();
+
+    }
+
+    private void goToTodayPostion() {
+        int todayPosition = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        mRecyclerView.getLayoutManager().scrollToPosition(todayPosition-1);
     }
 
     @Override
@@ -68,7 +75,7 @@ public class ListeLectureActivity extends AppCompatActivity {
                 final int nombreAnnes = Functions.getNombreAnnees(getApplicationContext());
                 final int rangAnnee = Functions.getRangAnnee(getApplicationContext());
                 List<Lecture> lectureList=Lecture.getMonthLecture(getApplicationContext(),String.valueOf(i+1),nombreAnnes,rangAnnee);
-                adapter = new LectureAdapter(lectureList);
+                adapter = new LectureAdapter(ListeLectureActivity.this,lectureList);
 
                 mRecyclerView.setAdapter(adapter);
             }

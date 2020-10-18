@@ -34,23 +34,32 @@
             app:layout_constraintTop_toBottomOf="@+id/main_appbar" />
 
         <TextView
+            android:id="@+id/tv_main_plan_choosed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Plan choisi:"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_main_today" />
+
+        <TextView
             android:id="@+id/tv_main_lecture_matin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
             android:gravity="center_horizontal"
-            android:padding="5dp"
             android:text="Lecture matin"
             android:textColor="#07C410"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_main_today" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_main_plan_choosed" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -72,7 +81,7 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView_audio1"
+                    android:id="@+id/imageView_audio_matin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:srcCompat="@mipmap/audio_icone" />
@@ -166,7 +175,6 @@
             android:layout_marginRight="24dp"
             android:elevation="10dp"
             android:gravity="center_horizontal"
-            android:padding="5dp"
             android:text="Lecture soir"
             android:textColor="#0097A7"
             android:textSize="18sp"
@@ -196,7 +204,7 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/imageView_audio_soir"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:srcCompat="@mipmap/audio_icone" />
@@ -290,7 +298,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+            android:id="@+id/main_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="5dp"

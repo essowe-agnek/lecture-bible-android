@@ -6,13 +6,14 @@
         android:enabled="true"
         android:icon="@drawable/ic_agenda"/>
 
+    <item android:id="@+id/item_menu_read_bible"
+        android:enabled="true"
+        android:title="Lire la bible"
+        android:icon="@drawable/ic_bible"/>
+
     <item android:id="@+id/item_menu_email"
         android:enabled="true"
         android:title="Nous écrire"
         android:icon="@drawable/ic_action_email"/>
 
-    <item android:id="@+id/item_menu_aide"
-        android:enabled="true"
-        android:title="Aide"
-        android:icon="@drawable/ic_action_help"/>
 </menu>

@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,12 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -33,16 +31,21 @@ import models.Bible;
 import models.Lecture;
 import utilities.Functions;
 
+import static utilities.Functions.getChapters;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar mToolbar;
     TextToSpeech textToSpeech;
-    ImageView mAudio1;
+    ImageView mAudioMatin;
+    ImageView mAudioSoir;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
+    BottomNavigationView bottomNavigationView;
 
     TextView mToday;
     TextView mLectureMatin;
     TextView mLectureSoir;
+    TextView mPlanChoosed;
 
     LinearLayout llLectureMatin;
     LinearLayout llLectureSoir;
@@ -62,13 +65,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Vérifier si la lecture est paramétrée
         setLectureSettigs();
 
-        mAudio1= findViewById(R.id.imageView_audio1);
+        mAudioMatin= findViewById(R.id.imageView_audio_matin);
+        mAudioSoir= findViewById(R.id.imageView_audio_soir);
         mToolbar = findViewById(R.id.main_appbar);
         mToday = findViewById(R.id.tv_main_today);
         mLectureMatin = findViewById(R.id.tv_main_lecture_matin);
         mLectureSoir = findViewById(R.id.tv_main_lecture_soir);
         llLectureMatin = findViewById(R.id.ll_lecture_matin);
         llLectureSoir = findViewById(R.id.ll_lecture_soir);
+        bottomNavigationView = findViewById(R.id.main_bottom_navigation);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Plan de lecture Bible");
@@ -87,13 +92,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mAudio1.setOnClickListener(new View.OnClickListener() {
+        mAudioMatin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Au commmencement était la parole", Toast.LENGTH_LONG).show();
-                textToSpeech.speak(" Au commencement était la parole",TextToSpeech.QUEUE_FLUSH,null);
+                textToSpeech.speak(getPassage("nt"),TextToSpeech.QUEUE_FLUSH,null);
             }
         });
+
+        mAudioSoir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Functions.agnekLog(String.valueOf(getPassage("ot").length()));
+                textToSpeech.speak(getPassage("ot"),TextToSpeech.QUEUE_FLUSH,null);
+            }
+        });
+
 
         llLectureSoir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +119,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.putStringArrayListExtra("chapters_verses",chaptersAndVerses);
                 intent.putExtra("book",book);
                 intent.putExtra("passages",passages);
-                intent.putExtra("passages_matin",passagesMatin);
+//                intent.putExtra("passages_matin",passagesMatin);
                 intent.putExtra("testament","ot");
+                intent.putExtra("cat","plan");
                 startActivity(intent);
             }
         });
@@ -125,7 +139,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.putExtra("passages",passages);
                 //intent.putExtra("passages_matin",passagesMatin);
                 intent.putExtra("testament","nt");
+                intent.putExtra("cat","plan");
                 startActivity(intent);
+            }
+        });
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.item_menu_lire_tout:
+                        startActivity(new Intent(MainActivity.this,ListeLectureActivity.class));
+                        break;
+
+                    case R.id.item_menu_read_bible:
+                        startActivity(new Intent(MainActivity.this,TestamentsActivity.class));
+                        break;
+                }
+                return false;
             }
         });
     }
@@ -147,41 +178,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    String getPassage(String testament){
+        List<Bible> bibleList= new ArrayList<>();
+        String book = testament.equals("ot") ? lecture1.getLivreSoir():lecture1.getLivreMatin();
+        List<String> chaptersList=
+                testament.equals("ot") ? getChapters(lecture1.getChapitreSoir()):getChapters(lecture1.getChapitreMatin());
+        switch (chaptersList.size()){
+            case 1:
+                int chapter = Integer.parseInt(chaptersList.get(0));
+                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter, testament);
+                break;
 
+            case 2:
+                int chapterStart = Integer.parseInt(chaptersList.get(0));
+                int chapterEnd = Integer.parseInt(chaptersList.get(1));
+                bibleList = Bible.getManyChapters(MainActivity.this,book,chapterStart,chapterEnd,testament);
+                break;
 
-    private ArrayList<String> getChapters(String rawChapter){
-        ArrayList<String> response= new ArrayList<>();
-        // plusieurs chapitres
-        if(rawChapter.contains(",")){
-            String[] arrayChapters= rawChapter.split(",");
-            String chapterStart =arrayChapters[0];
-            String chapterEnd=arrayChapters[arrayChapters.length-1];
-            response.add(chapterStart);
-            response.add(chapterEnd);
-
-            // 1 chapitre et quelques versets
-        } else if(rawChapter.contains(":")){
-            String[] arrayChapterVerse=rawChapter.split(":");
-            String chapter= arrayChapterVerse[0];
-            String verses=arrayChapterVerse[1];
-
-            String[] arrayVerses = verses.split("-");
-            String verseStart =arrayVerses[0];
-            String verseEnd =arrayVerses[1];
-
-            response.add(chapter);
-            response.add(verseStart);
-            response.add(verseEnd);
-
-            //un verset
-        } else {
-            response.add(rawChapter);
+            case 3:
+                chapter = Integer.parseInt(chaptersList.get(0));
+                int verseStart = Integer.parseInt(chaptersList.get(1));
+                int verseEnd = Integer.parseInt(chaptersList.get(2));
+                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter,verseStart,verseEnd,testament);
+                break;
         }
 
-        return response;
+        StringBuilder stringBuilder = new StringBuilder();
+        // Le passage
+        stringBuilder.append(book);
+        for(String strChapter:chaptersList){
+            stringBuilder.append(strChapter+",");
+        }
+        for(Bible bible:bibleList){
+            stringBuilder.append(bible.getVerseText());
+        }
 
+        return stringBuilder.toString();
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -204,6 +237,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sp = getSharedPreferences("com.agnekdev.lecture",MODE_PRIVATE);
         boolean settingsisSet = sp.getBoolean("settings_is_set",false);
         if(settingsisSet){
+            mPlanChoosed = findViewById(R.id.tv_main_plan_choosed);
+            int planChoosed = sp.getInt("plan",0);
+            String strPlanChoosed =
+                    planChoosed <= 1 ? String.valueOf(planChoosed) +" an" :String.valueOf(planChoosed) +" ans";
+            mPlanChoosed.setText("Plan choisi: "+strPlanChoosed);
+
             showTodayLecture();
         }
     }
@@ -215,6 +254,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+
+        textToSpeech.stop();
     }
 
     // 2 - Configure Drawer Layout
@@ -238,4 +279,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(MainActivity.this,ChoosePlanActivity.class));
         }
     }
+
+
 }
