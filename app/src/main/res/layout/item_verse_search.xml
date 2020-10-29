@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@color/bgColor"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_verse_search_passage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:gravity="right"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:text="Jean 3:16" />
+
+
+    <TextView
+        android:id="@+id/item_verse_search_verse_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="8dp"
+        android:text="Dieu a tant aimé le monde qu'il a donné son fils unique afin que"
+        android:textColor="@color/textColor"
+        android:textSize="16sp" />
+
+</LinearLayout>

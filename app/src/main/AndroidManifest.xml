@@ -9,8 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".BibleSearchBissActivity"></activity>
+
+        <activity android:name=".SettingsActivity" />
+
+        <activity android:name=".BibleSearchActivity" />
+
         <activity android:name=".ChaptersActivity" />
+
         <activity android:name=".BooksActivity" />
         <activity android:name=".TestamentsActivity" />
         <activity android:name=".BibleActivity" />
@@ -23,6 +29,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name="utilities.AlarmReceiver"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="utilities.AlarmService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

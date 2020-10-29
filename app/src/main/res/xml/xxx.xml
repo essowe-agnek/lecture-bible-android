@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:layout_width="match_parent"
+        android:defaultValue="1"
+        android:entries="@array/les_plans"
+        android:entryValues="@array/valeurs_plans"
+        android:key="list_preference_1"
+        android:title="Plan choisi" />
+
+</PreferenceScreen>

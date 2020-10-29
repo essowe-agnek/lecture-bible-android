@@ -4,5 +4,11 @@
     <color name="colorPrimaryDark">#002171</color>
     <color name="colorAccent">#D81B60</color>
     
-    <color name="color_yellow">#FBC02D</color>
+    <color name="color_yellow">#C2185B</color>
+    <color name="bgColor">#FCFCFC</color>
+    <color name="textColor">#000</color>
+    <color name="bgSecColor">#F2F2F2</color>
+
+    <color name="toolbarAccent">#FFF</color>
+    <color name="selectColor">#DEE185</color>
 </resources>

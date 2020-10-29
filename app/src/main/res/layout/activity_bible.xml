@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgColor"
     tools:context=".BibleActivity">
 
     <include layout="@layout/app_bar"
@@ -18,7 +19,8 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_prior"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bible_appbar" />
+        app:layout_constraintTop_toBottomOf="@id/bible_appbar"
+        android:tint="@color/color_yellow"/>
 
     <ImageView
         android:id="@+id/imageView_bible_next"
@@ -29,6 +31,7 @@
         android:layout_marginRight="16dp"
         android:src="@drawable/ic_next"
         app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/color_yellow"
         app:layout_constraintTop_toBottomOf="@+id/bible_appbar" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,12 +39,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/bgSecColor"
+        app:layout_constraintBottom_toTopOf="@+id/bible_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView_bible_prior"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/imageView_bible_prior" />
 
     <TextView
         android:id="@+id/tv_bible_chapter"
@@ -49,12 +52,26 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="8dp"
-        android:textColor="#D32F2F"
+        android:textColor="@color/color_yellow"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView_bible_prior" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bible_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_nav_border"
+        android:elevation="5dp"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bible_bottom_navigation_menu" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

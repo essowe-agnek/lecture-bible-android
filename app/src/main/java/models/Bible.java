@@ -19,6 +19,8 @@ public class Bible {
     private String verseText;
     private int bgColor;
     private static List<String> books;
+    private boolean isSelected;
+    private static int nbSelected;
 
     public Bible(Cursor cursor){
         this.id=cursor.getString(cursor.getColumnIndex("verseID"));
@@ -28,6 +30,7 @@ public class Bible {
         this.verse=cursor.getInt(cursor.getColumnIndex("startVerse"));
         this.verseText=cursor.getString(cursor.getColumnIndex("verseText"));
         this.bgColor =cursor.getInt(cursor.getColumnIndex("bgColor"));
+        this.isSelected=false;
     }
 
     public String getId() {
@@ -90,6 +93,27 @@ public class Bible {
         return books;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        if(selected){
+            nbSelected+=1;
+        } else {
+            nbSelected-=1;
+        }
+        isSelected = selected;
+    }
+
+    public static int getNbSelected() {
+        return nbSelected;
+    }
+
+    public static void setNbSelected(int nbSelected) {
+
+        Bible.nbSelected = nbSelected;
+    }
 
     // ******************************************************************************************************
 
@@ -214,12 +238,19 @@ public class Bible {
 
     }
 
+    public static String sqlNoAccent(){
+        String where=" replace(replace(replace(replace(replace(replace(replace(replace(replace(" +
+                "replace(replace(replace(replace( lower(verseText), 'á','a'), 'ã','a'), 'â','a'), 'é','e'), 'ê','e'), 'í','i')," +
+                "'ï','i'),'ó','o') ,'õ','o') ,'ô','o'),'ú','u'), 'ç','c'),'è','e')  like ?";
+        return where;
+    }
+
     public static List<Bible> searchVerses(Context context,String textSearch,String testament){
         MyDatabaseHelper myDatabaseHelper= new MyDatabaseHelper(context);
         SQLiteDatabase database = myDatabaseHelper.getReadableDatabase();
 
-        final String queryOt="SELECT * FROM bible WHERE eveningBook IS NOT NULL AND verseText like ?";
-        final String queryNt="SELECT * FROM bible WHERE morningBook IS NOT NULL AND verseText like ?";
+        final String queryOt="SELECT * FROM bible WHERE eveningBook IS NOT NULL AND"+sqlNoAccent();
+        final String queryNt="SELECT * FROM bible WHERE morningBook IS NOT NULL AND"+sqlNoAccent();
         final String query = testament.equals("ot") ? queryOt : queryNt;
         String[] args ={"%"+textSearch+"%"};
         Cursor cursor = database.rawQuery(query,args);
@@ -237,6 +268,26 @@ public class Bible {
         database.close();
         booksList.addAll(booksSetList);
         books=booksList;
+        return bibleList;
+    }
+
+    public static List<Bible> searchVersesFromBook(Context context,String textSearch,String testament,String book){
+        MyDatabaseHelper myDatabaseHelper= new MyDatabaseHelper(context);
+        SQLiteDatabase database = myDatabaseHelper.getReadableDatabase();
+
+        final String queryOt="SELECT * FROM bible WHERE eveningBook = ? AND"+sqlNoAccent();
+        final String queryNt="SELECT * FROM bible WHERE morningBook = ? AND"+sqlNoAccent();
+        final String query = testament.equals("ot") ? queryOt : queryNt;
+        String[] args ={book,"%"+textSearch+"%"};
+        Cursor cursor = database.rawQuery(query,args);
+
+        List<Bible> bibleList = new ArrayList<>();
+        while (cursor.moveToNext()){
+            Bible bible = new Bible(cursor);
+            bibleList.add(bible);
+        }
+        cursor.close();
+        database.close();
         return bibleList;
     }
 

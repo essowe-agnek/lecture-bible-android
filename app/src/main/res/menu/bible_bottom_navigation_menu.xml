@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bible_bottom_navigation_menuitem_copy"
+        android:enabled="true"
+        android:icon="@drawable/ic_copy"
+        android:title="Copier" />
+
+    <item
+        android:id="@+id/bible_bottom_navigation_menuitem_share"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="Partager" />
+
+    <item
+        android:id="@+id/bible_bottom_navigation_menuitem_favory"
+        android:enabled="true"
+        android:icon="@drawable/ic_favory"
+        android:title="Ajouter aux favoris" />
+
+
+</menu>

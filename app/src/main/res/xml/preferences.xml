@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreferenceCompat
+        app:key="mode_night"
+        app:title="Mode nuit"
+        app:summary="Activer le mode nuit"/>
+
+    <SwitchPreferenceCompat
+        app:key="notifications"
+        app:title="Me rappeler la lecture du jour"
+        app:summary="L'application vous notifiera la lecture du jour"/>
+
+    <Preference
+        app:key="btnTimeFilter"
+        app:title="Heure de rappel"
+        app:dependency="notifications"/>
+
+
+    <ListPreference
+        app:key="plan"
+        app:title="Choix du plan"
+        app:defaultValue="1"
+        app:summary="%s"
+        app:entries="@array/les_plans"
+        app:entryValues="@array/valeurs_plans" />
+
+
+</androidx.preference.PreferenceScreen>

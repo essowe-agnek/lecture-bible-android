@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Plan de lecture Bible</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="help_reason">Votre soutien nous aidera à couvrir les frais d\'hébergement afin de péréniser cette application</string>
+    <string name="color_default_title">Couleur jaune</string>
+    <string name="color_default_summary">Couleur par défaut (jaune)</string>
+
+    <string-array name="les_mois">
+        <item>Janvier</item>
+        <item>Février</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Août</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Décembre</item>
+    </string-array>
+</resources>

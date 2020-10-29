@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgSecColor"
     tools:context=".TestamentsActivity">
 
-    <include layout="@layout/app_bar"
-        android:id="@+id/testaments_appbar"/>
+    <include
+        android:id="@+id/testaments_appbar"
+        layout="@layout/app_bar" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -29,7 +31,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="Choix du testament"
-        android:textColor="#000"
+        android:textColor="@color/textColor"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,10 +43,11 @@
         android:layout_height="120dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:cardMaxElevation="2dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6">
@@ -78,7 +81,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="Ancien testament"
-                android:textColor="#000"
+                android:textColor="@color/textColor"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,6 +99,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView_testaments_ot">
@@ -125,7 +130,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="Nouveau testament"
-                android:textColor="#000"
+                android:textColor="@color/textColor"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

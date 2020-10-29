@@ -1,14 +1,26 @@
 package com.agnekdev.planlecturebible;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.Normalizer;
@@ -24,6 +36,7 @@ public class BooksActivity extends AppCompatActivity{
     BooksAdapter adapter;
     List<String> booksList;
     private static String testament;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +81,11 @@ public class BooksActivity extends AppCompatActivity{
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent intent =new Intent(BooksActivity.this,SearchActivity.class);
+                Intent intent =new Intent(BooksActivity.this,BibleSearchActivity.class);
                 intent.putExtra("query",stripAccents(query));
                 intent.putExtra("testament",testament);
                 intent.putExtra("zone","un_testament");
+
                 startActivity(intent);
                 return false;
             }
@@ -85,11 +99,12 @@ public class BooksActivity extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
+
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-
 
 }

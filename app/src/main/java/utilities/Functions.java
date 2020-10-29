@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.agnekdev.planlecturebible.TestamentsActivity;
+import androidx.preference.PreferenceManager;
 
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -12,13 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import models.Bible;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public abstract class Functions {
 
@@ -30,14 +23,14 @@ public abstract class Functions {
     }
 
     public static int getNombreAnnees(Context context){
-        SharedPreferences sp = context.getSharedPreferences("com.agnekdev.lecture",MODE_PRIVATE);
-        final int nombreAnnee = sp.getInt("plan",0);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        final int nombreAnnee = Integer.parseInt(sp.getString("plan","0"));
         return nombreAnnee;
     }
 
     public static int getRangAnnee(Context context) {
-        SharedPreferences sp = context.getSharedPreferences("com.agnekdev.lecture",MODE_PRIVATE);
-        final int plan = sp.getInt("plan",0);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        final int plan = Integer.parseInt(sp.getString("plan","0"));
         final int yearOfSettings = sp.getInt("year_of_settings",0);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         int difference = currentYear-yearOfSettings;
@@ -124,25 +117,10 @@ public abstract class Functions {
 
     }
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++ A utilisser après
-    void searchVersesSystem(Context context){
+    public static String pluralize(int number,String text){
 
-        List<Bible> bibleList =Bible.searchVerses(context,"Paul","nt");
-        List<String> books= Bible.getBooks();
-
-        Map<String,List<Bible>> map = new HashMap<>();
-        for(String book:books){
-            List<Bible> newBibleList = new ArrayList<>();
-            for(Bible bible:bibleList){
-                if(book.equals(bible.getMorningBook())){
-                    Functions.agnekLog(bible.getMorningBook());
-                    newBibleList.add(bible);
-                }
-            }
-            map.put(book,newBibleList);
-        }
-        //Functions.agnekLog(String.valueOf(books.size()));
-        Functions.agnekLog(map.get("Colossiens").toString());
+        String response = number <= 1 ? text : text+"s";
+        return response;
     }
 
     public static String stripAccents(String s) {
@@ -150,4 +128,6 @@ public abstract class Functions {
         s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
         return s;
     }
+
+
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="les_plans">
+        <item name="1">1 an</item>
+        <item nme="2">2 ans</item>
+        <item name="3">3 ans</item>
+    </string-array>
+    <string-array name="valeurs_plans">
+        <item name="1">1</item>
+        <item nme="2">2</item>
+        <item name="3">3</item>
+    </string-array>
+</resources>

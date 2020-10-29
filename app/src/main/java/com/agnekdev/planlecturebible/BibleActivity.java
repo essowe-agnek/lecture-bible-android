@@ -1,18 +1,27 @@
 package com.agnekdev.planlecturebible;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
@@ -31,6 +40,8 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
     public static RecyclerView mRecyclerView;
     ImageView imageViewNext;
     ImageView imageViewPrior;
+    BottomNavigationView bottomNavigationView;
+
     BibleAdapter bibleAdapter;
     ArrayList<String> chaptersAndverses;
     private int chapterStart=0;
@@ -44,6 +55,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
     private int versePosition;
     private static String category;
     private String testament;
+    private String passages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
         mChapter = findViewById(R.id.tv_bible_chapter);
         imageViewNext = findViewById(R.id.imageView_bible_next);
         imageViewPrior = findViewById(R.id.imageView_bible_prior);
+        bottomNavigationView = findViewById(R.id.bible_bottom_navigation);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,7 +91,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
                     currentChapter+=1;
                     if(currentChapter <= chapterEnd){
                         List<Bible> bibleList = Bible.getOneChapter(BibleActivity.this,book,currentChapter,"ot");
-                        bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this);
+                        bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this,bottomNavigationView);
                         mRecyclerView.setAdapter(bibleAdapter);
 
                         mChapter.setText(book+" "+String.valueOf(currentChapter));
@@ -92,7 +105,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
                         currentChapter+=1;
                         if(currentChapter <= lastChapter){
                             List<Bible> bibleList = Bible.getOneChapter(BibleActivity.this,book,currentChapter,testament);
-                            bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this);
+                            bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this,bottomNavigationView);
                             mRecyclerView.setAdapter(bibleAdapter);
 
                             mChapter.setText(book+" "+String.valueOf(currentChapter));
@@ -112,7 +125,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
                     currentChapter-=1;
                     if(currentChapter>=chapterStart){
                         List<Bible> bibleList = Bible.getOneChapter(BibleActivity.this,book,currentChapter,"ot");
-                        bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this);
+                        bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this,bottomNavigationView);
                         mRecyclerView.setAdapter(bibleAdapter);
 
                         mChapter.setText(book+" "+String.valueOf(currentChapter));
@@ -124,7 +137,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
                     currentChapter-=1;
                     if(currentChapter>=1){
                         List<Bible> bibleList = Bible.getOneChapter(BibleActivity.this,book,currentChapter,testament);
-                        bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this);
+                        bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,BibleActivity.this,bottomNavigationView);
                         mRecyclerView.setAdapter(bibleAdapter);
 
                         mChapter.setText(book+" "+String.valueOf(currentChapter));
@@ -154,7 +167,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
 
         category=intent.getStringExtra("cat");
 
-        String passages=intent.getStringExtra("passages");
+        passages=intent.getStringExtra("passages");
         getSupportActionBar().setTitle(passages);
         testament = intent.getStringExtra("testament");
 
@@ -168,7 +181,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
 
                 mChapter.setText(passages);
 
-                bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,this);
+                bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,this,bottomNavigationView);
                 mRecyclerView.setAdapter(bibleAdapter);
                 break;
 
@@ -181,7 +194,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
                 bibleList = Bible.getOneChapter(BibleActivity.this,book,chapterStart,testament);
                 mChapter.setText(book+" "+strChapterStart);
 
-                bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,this);
+                bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,this,bottomNavigationView);
                 mRecyclerView.setAdapter(bibleAdapter);
 
                 isOneChapter = false;
@@ -199,7 +212,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
 
                 mChapter.setText(passages);
 
-                bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,this);
+                bibleAdapter = new BibleAdapter(BibleActivity.this,bibleList,this,bottomNavigationView);
                 mRecyclerView.setAdapter(bibleAdapter);
                 break;
         }
@@ -237,5 +250,70 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
     @Override
     public void listenerMethod(int position) {
         versePosition = position;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bible_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.bible_menu_item_mode:
+//                AlertDialog.Builder builder= new AlertDialog.Builder(this);
+//                builder.setTitle("Veuillez choisir le mode");
+//                View view = getLayoutInflater().inflate(R.layout.choose_mode,null);
+//                builder.setView(view);
+//
+//                final AlertDialog dialog = builder.create();
+//                Button btnModeLight = view.findViewById(R.id.btn_mode_light);
+//                Button btnModeDark = view.findViewById(R.id.btn_mode_dark);
+//
+//                btnModeLight.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDayNightMode(false);
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                btnModeDark.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setDayNightMode(true);
+//                        dialog.dismiss();
+//                    }
+//                });
+//                dialog.show();
+//                break;
+//        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Bible.setNbSelected(0);
+    }
+
+    void setDayNightMode(boolean isNIghtMode){
+        AppCompatDelegate
+                .setDefaultNightMode(isNIghtMode?AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_NO);
+        Intent intent = new Intent(BibleActivity.this,BibleActivity.this.getClass());
+        intent.putStringArrayListExtra("chapters_verses",chaptersAndverses);
+        intent.putExtra("book",book);
+        intent.putExtra("cat",category);
+        intent.putExtra("testament",testament);
+        intent.putExtra("passages",passages);
+
+        SharedPreferences shp = getSharedPreferences("lecturebible.mode",MODE_PRIVATE);
+        //boolean isNIghtMode =shp.getBoolean("is_night_mode",false);
+        SharedPreferences.Editor editor= shp.edit();
+        editor.putBoolean("is_night_mode",isNIghtMode);
+        editor.commit();
+        finish();
+        startActivity(intent);
     }
 }

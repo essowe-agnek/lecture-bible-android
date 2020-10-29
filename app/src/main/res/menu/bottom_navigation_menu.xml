@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/item_menu_read_bible"
+        android:enabled="true"
+        android:title="Lire la bible"
+        android:icon="@drawable/ic_bible2"/>
+
     <item android:id="@+id/item_menu_lire_tout"
         android:title="Tout le plan"
         android:enabled="true"
         android:icon="@drawable/ic_agenda"/>
 
-    <item android:id="@+id/item_menu_read_bible"
-        android:enabled="true"
-        android:title="Lire la bible"
-        android:icon="@drawable/ic_bible"/>
+
 
     <item android:id="@+id/item_menu_email"
         android:enabled="true"
         android:title="Nous écrire"
-        android:icon="@drawable/ic_action_email"/>
+        android:icon="@drawable/ic_email2"/>
 
 </menu>

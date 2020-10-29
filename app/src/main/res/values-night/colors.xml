@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFDE03</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorAccent">#D81B60</color>
+    
+    <color name="color_yellow">#FFFF00</color>
+    <color name="bgColor">#000</color>
+    <color name="textColor">#fff</color>
+    <color name="bgSecColor">#BE181717</color>
+
+    <color name="toolbarAccent">#FFF</color>
+    <color name="selectColor">#1B33CF</color>
+</resources>

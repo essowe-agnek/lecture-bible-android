@@ -3,6 +3,7 @@ package com.agnekdev.planlecturebible;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -49,18 +50,18 @@ public class ChoosePlanActivity extends AppCompatActivity {
                 int choice= rgChoosePlan.getCheckedRadioButtonId();
 
                 int yearofSettings= Calendar.getInstance().get(Calendar.YEAR);
-                SharedPreferences sp = getSharedPreferences("com.agnekdev.lecture",MODE_PRIVATE);
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ChoosePlanActivity.this);
                 SharedPreferences.Editor editor=sp.edit();
-                int plan=1;
+                String plan="1";
 
                 if(choice == rbOneId){
-                    plan=1;
+                    plan="1";
                 } else if(choice == rbTwoId){
-                    plan=2;
+                    plan="2";
                 } else if(choice == rbThreeId){
-                    plan=3;
+                    plan="3";
                 }
-                editor.putInt("plan",plan);
+                editor.putString("plan",plan);
                 editor.putBoolean("settings_is_set",true);
                 editor.putInt("year_of_settings",yearofSettings);
                 editor.commit();

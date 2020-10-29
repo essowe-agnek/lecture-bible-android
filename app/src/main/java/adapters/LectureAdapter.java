@@ -65,7 +65,7 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.LectureH
         else {
             holder.mLectureSoir.setText(livreChapitreSoir);
 
-            holder.cvSoir.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            //holder.cvSoir.setBackgroundColor(mActivity.getResources().getColor(R.color.bgColor));
         }
 
         holder.imageViewMoreMatin.setOnClickListener(new View.OnClickListener() {
