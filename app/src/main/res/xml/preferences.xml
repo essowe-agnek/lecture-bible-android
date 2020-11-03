@@ -7,17 +7,6 @@
         app:title="Mode nuit"
         app:summary="Activer le mode nuit"/>
 
-    <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Me rappeler la lecture du jour"
-        app:summary="L'application vous notifiera la lecture du jour"/>
-
-    <Preference
-        app:key="btnTimeFilter"
-        app:title="Heure de rappel"
-        app:dependency="notifications"/>
-
-
     <ListPreference
         app:key="plan"
         app:title="Choix du plan"

@@ -13,7 +13,7 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:text="Job"
-        android:textColor="@android:color/black"
+        android:textColor="@color/textColor"
         android:textSize="16sp" />
 
     <TextView

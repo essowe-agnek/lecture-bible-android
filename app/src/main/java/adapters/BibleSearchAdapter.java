@@ -1,29 +1,31 @@
 package adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.agnekdev.planlecturebible.R;
+import com.agnekdev.bibleunan.BibleActivity;
+import com.agnekdev.bibleunan.R;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import models.Bible;
 import utilities.Functions;
+
+import static utilities.Functions.getChapters;
 
 public class BibleSearchAdapter extends BaseExpandableListAdapter {
     private Context context;
@@ -95,7 +97,7 @@ public class BibleSearchAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int bookListPosition, int verseExpandedPosition, boolean isLastchild, View convertView, ViewGroup viewGroup) {
+    public View getChildView(int bookListPosition, final int verseExpandedPosition, boolean isLastchild, View convertView, ViewGroup viewGroup) {
         final Bible bible = (Bible) getChild(bookListPosition, verseExpandedPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
@@ -105,13 +107,14 @@ public class BibleSearchAdapter extends BaseExpandableListAdapter {
         TextView mVerseText = (TextView) convertView.findViewById(R.id.item_verse_search_verse_text);
         TextView mPassage = (TextView) convertView.findViewById(R.id.item_verse_search_passage);
 
+        final String testament = bible.getEveningBook() != null ? "ot" : "nt";
+
         final String book=bible.getEveningBook()!=null?bible.getEveningBook():bible.getMorningBook();
         final int chapter =bible.getChapter();
         final int verse = bible.getVerse();
-        String passageFormated =String.format("%s %d : %d",book,chapter,verse);
+        final String passageFormated =String.format("%s %d : %d",book,chapter,verse);
+        final String passages = book+" "+String.valueOf(chapter);
 
-        //***
-        //String fulltext = bible.getVerseText();
         String fulltextStriped = stripAccents(bible.getVerseText().toLowerCase());
         int start = fulltextStriped.indexOf(query);
         int endPos= query.length()+start;
@@ -127,7 +130,16 @@ public class BibleSearchAdapter extends BaseExpandableListAdapter {
         mVerseText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,String.valueOf(bible.getVerse()),Toast.LENGTH_LONG).show();
+//                Toast.makeText(context,String.valueOf(bible.getVerse()),Toast.LENGTH_LONG).show();
+                ArrayList<String> chaptersAndVerses = getChapters(String.valueOf(chapter));
+                Intent intent = new Intent(context, BibleActivity.class);
+                intent.putStringArrayListExtra("chapters_verses",chaptersAndVerses);
+                intent.putExtra("book",book);
+                intent.putExtra("passages",passages);
+                intent.putExtra("testament",testament);
+                intent.putExtra("cat","bible");
+                intent.putExtra("position",verse);
+                context.startActivity(intent);
             }
         });
         return convertView;

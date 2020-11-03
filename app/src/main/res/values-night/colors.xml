@@ -11,4 +11,5 @@
 
     <color name="toolbarAccent">#FFF</color>
     <color name="selectColor">#1B33CF</color>
+    <color name="colorNormalWhite_DarkBlack">#000</color>
 </resources>

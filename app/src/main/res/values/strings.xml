@@ -6,6 +6,56 @@
     <string name="color_default_title">Couleur jaune</string>
     <string name="color_default_summary">Couleur par défaut (jaune)</string>
 
+    <string name="about">
+        <![CDATA[
+        <p>L\'application <strong> Plan de lecture de la Bible</strong> est créée dans le but d\'aider les chrétiens de
+        toutes les dénominations de par le monde entier à lire, méditer, proclamer et écouter la parole
+        originale de Dieu qui est la Bible.</p>
+        <p>Lire, méditer, proclamer et mettre en pratique la parole de Dieu tous les jours est une recommandation de Dieu.
+            Si nous le faisons, nous serons bénis sur la terre selon les propres paroles du Seigneur. Selon qu\'il est
+            écrit:
+            Que ce livre de la loi ne s\'éloigne point de ta bouche. Médite-le jour et nuit, pour agir fidèlement selon tout
+            ce qui
+            y est écrit; car c\'est alors que tu auras du succès dans tes entreprises, c\'est alors que tu réussiras (Jos
+            1:8).</p>
+
+        <p>Non seulelement nous aurons du succès sur la terre, en menant une vie conforme à la volonté de Dieu qui
+            est inscrite dans la Bible, l\'accès au royaume des cieux nous est garanti, ce qui est meilleur, car notre cité
+            est au ciel.</p>
+
+        <p>L\'application vous propose trois plans:</p>
+        1 an, 2 ans, 3 ans.
+        <p>
+            Selon le plan choisi, vous pouvez lire toute la Bible en un an, deux ans ou trois ans. La particularité
+            de ce plan, c\'est que chaque jour vous lirez l\'ancien et le nouveau testament dans l\'ordre
+            logique.
+        </p>
+        <p>Le nouveau testament étant plus pétit, et de plus étant notre alliance, peu importe le plan que vous
+            aurez choisi, en un an, vous allez lire tout le nouveau testament.
+        </p>
+
+        <p> L\'application intègre aussi la Bible Louis Segong que vous pouvez lire, y faire des recherches,
+        partager des versets, des pasages, surligner, ect.
+        </p>
+
+        <strong>Le Concepteur:</strong>
+        <p> Le concepteur de cette application s\'appelle Frédéric E. AGNEKETOM. Il est pasteur d\'une
+            église pentécotiste à Lomé(TOGO) exerçant le ministère de Docteur et d\'Evangéliste.
+            Il est aussi informaticien développeur d\'applications.</p>
+
+        <p>Contact: +228 70 43 48 07/ 91 81 47 73.</p>
+
+        <p>Email: frederic.agneketom@gmail.com.</p>
+
+        <p>
+            Tous vos soutiens sont les bienvenus pour nous aider à faire avancer ce projet et le péréniser.
+        </p>
+        <p>Soyez bénis au nom du Seigneur <strong>Jésus-Christ.</strong></p>
+
+        <p>Soit donc que vous mangiez, soit que vous buviez, soit que vous fassiez quelque autre chose, faites tout pour la
+            gloire de Dieu</p>
+        ]]>
+    </string>
     <string-array name="les_mois">
         <item>Janvier</item>
         <item>Février</item>

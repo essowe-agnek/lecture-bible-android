@@ -5,16 +5,15 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.agnekdev.planlecturebible.BooksActivity;
-import com.agnekdev.planlecturebible.ChaptersActivity;
-import com.agnekdev.planlecturebible.R;
+import com.agnekdev.bibleunan.BooksActivity;
+import com.agnekdev.bibleunan.ChaptersActivity;
+import com.agnekdev.bibleunan.R;
 
 import java.util.List;
 

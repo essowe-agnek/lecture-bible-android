@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1084823055552",
+    "firebase_url": "https://lecture-bible.firebaseio.com",
+    "project_id": "lecture-bible",
+    "storage_bucket": "lecture-bible.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084823055552:android:41cf45b72ebed3fa235125",
+        "android_client_info": {
+          "package_name": "com.agnekdev.planlecturebible"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084823055552-hda0hjk06tp1vcs27469b9r3ah04v914.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0NwSYewPIDBlBqAf2E9EsItpGB9Gp7pE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084823055552-hda0hjk06tp1vcs27469b9r3ah04v914.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

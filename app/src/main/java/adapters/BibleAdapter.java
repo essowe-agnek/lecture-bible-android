@@ -17,15 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.agnekdev.planlecturebible.R;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.agnekdev.bibleunan.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 

@@ -271,7 +271,8 @@ public class Bible {
         return bibleList;
     }
 
-    public static List<Bible> searchVersesFromBook(Context context,String textSearch,String testament,String book){
+    // Search verses in chapters of a book
+    public static List<Bible> searchVersesFromChapters(Context context, String textSearch, String testament, String book){
         MyDatabaseHelper myDatabaseHelper= new MyDatabaseHelper(context);
         SQLiteDatabase database = myDatabaseHelper.getReadableDatabase();
 
@@ -290,6 +291,27 @@ public class Bible {
         database.close();
         return bibleList;
     }
+
+    public static List<Bible> searchVersesFromVerses(Context context, String textSearch, String testament, String book,int chapter){
+        MyDatabaseHelper myDatabaseHelper= new MyDatabaseHelper(context);
+        SQLiteDatabase database = myDatabaseHelper.getReadableDatabase();
+
+        final String queryOt="SELECT * FROM bible WHERE eveningBook = ? AND chapter=? AND"+sqlNoAccent();
+        final String queryNt="SELECT * FROM bible WHERE morningBook = ? AND chapter=? AND"+sqlNoAccent();
+        final String query = testament.equals("ot") ? queryOt : queryNt;
+        String[] args ={book,String.valueOf(chapter),"%"+textSearch+"%"};
+        Cursor cursor = database.rawQuery(query,args);
+
+        List<Bible> bibleList = new ArrayList<>();
+        while (cursor.moveToNext()){
+            Bible bible = new Bible(cursor);
+            bibleList.add(bible);
+        }
+        cursor.close();
+        database.close();
+        return bibleList;
+    }
+
 
 
 }

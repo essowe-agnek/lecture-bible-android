@@ -5,17 +5,16 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.agnekdev.planlecturebible.BibleActivity;
-import com.agnekdev.planlecturebible.BooksActivity;
-import com.agnekdev.planlecturebible.ChaptersActivity;
-import com.agnekdev.planlecturebible.R;
+import com.agnekdev.bibleunan.BibleActivity;
+import com.agnekdev.bibleunan.BooksActivity;
+import com.agnekdev.bibleunan.ChaptersActivity;
+import com.agnekdev.bibleunan.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,17 +45,15 @@ public class ChaptersAdapter extends RecyclerView.Adapter<ChaptersAdapter.Chapte
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, BibleActivity.class);
-
                 String testament = BooksActivity.getTestament();
                 String book= ChaptersActivity.getBook();
                 ArrayList<String> chaptersAndVerses = getChapters(String.valueOf(chapter));
                 String passages = book+" "+String.valueOf(chapter);
 
+                Intent intent = new Intent(context, BibleActivity.class);
                 intent.putStringArrayListExtra("chapters_verses",chaptersAndVerses);
                 intent.putExtra("book",book);
                 intent.putExtra("passages",passages);
-                //intent.putExtra("passages_matin",passagesMatin);
                 intent.putExtra("testament",testament);
                 intent.putExtra("cat","bible");
                 context.startActivity(intent);

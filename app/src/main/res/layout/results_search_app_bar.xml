@@ -14,7 +14,8 @@
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:src="@drawable/ic_back"
+        app:srcCompat="@drawable/ic_back"
+        android:tint="@color/colorNormalWhite_DarkBlack"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
@@ -35,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/badge_border"
-            android:text="10"
+            android:text="0"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -43,7 +44,7 @@
             android:id="@+id/search_bible_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/colorNormalWhite_DarkBlack" />
 
 
     </LinearLayout>
@@ -64,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/badge_border"
-            android:text="10"
+            android:text="0"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -72,7 +73,7 @@
             android:id="@+id/search_bible_verse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/colorNormalWhite_DarkBlack" />
 
     </LinearLayout>
 

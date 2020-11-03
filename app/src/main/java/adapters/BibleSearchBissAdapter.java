@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -15,12 +16,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.agnekdev.planlecturebible.R;
+import com.agnekdev.bibleunan.BibleActivity;
+import com.agnekdev.bibleunan.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Bible;
 
+import static utilities.Functions.getChapters;
 import static utilities.Functions.stripAccents;
 
 public class BibleSearchBissAdapter extends RecyclerView.Adapter<BibleSearchBissAdapter.MyVH>{
@@ -49,6 +53,9 @@ public class BibleSearchBissAdapter extends RecyclerView.Adapter<BibleSearchBiss
         final int verse = bible.getVerse();
         String passageFormated =String.format("%s %d : %d",book,chapter,verse);
 
+        final String passages = book+" "+String.valueOf(chapter);
+        final String testament = bible.getEveningBook() != null ? "ot" : "nt";
+
         //***
         String fulltext = bible.getVerseText();
         String fulltextStriped = stripAccents(bible.getVerseText().toLowerCase());
@@ -62,6 +69,21 @@ public class BibleSearchBissAdapter extends RecyclerView.Adapter<BibleSearchBiss
 
         holder.mversetext.setText(ss);
         holder.mPassage.setText(passageFormated);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> chaptersAndVerses = getChapters(String.valueOf(chapter));
+                Intent intent = new Intent(context, BibleActivity.class);
+                intent.putStringArrayListExtra("chapters_verses",chaptersAndVerses);
+                intent.putExtra("book",book);
+                intent.putExtra("passages",passages);
+                intent.putExtra("testament",testament);
+                intent.putExtra("cat","bible");
+                intent.putExtra("position",verse);
+                context.startActivity(intent);
+            }
+        });
 
     }
 
