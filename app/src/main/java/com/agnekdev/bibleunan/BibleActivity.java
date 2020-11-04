@@ -15,10 +15,10 @@ import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
     Toolbar mToolbar;
     TextView mChapter;
     public static RecyclerView mRecyclerView;
-    ImageView imageViewNext;
-    ImageView imageViewPrior;
+    FloatingActionButton fabNext;
+    FloatingActionButton fabPrior;
     BottomNavigationView bottomNavigationView;
 
     BibleAdapter bibleAdapter;
@@ -62,8 +62,8 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
         mToolbar = findViewById(R.id.bible_appbar);
         mRecyclerView= findViewById(R.id.bible_recyclerview);
         mChapter = findViewById(R.id.tv_bible_chapter);
-        imageViewNext = findViewById(R.id.imageView_bible_next);
-        imageViewPrior = findViewById(R.id.imageView_bible_prior);
+        fabNext = findViewById(R.id.fab_bible_next);
+        fabPrior = findViewById(R.id.fab_bible_prior);
         bottomNavigationView = findViewById(R.id.bible_bottom_navigation);
 
         setSupportActionBar(mToolbar);
@@ -77,7 +77,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
 
         currentChapter = !isOneChapter ? chapterStart : chapter;
 
-        imageViewNext.setOnClickListener(new View.OnClickListener() {
+        fabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!isOneChapter){
@@ -111,7 +111,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
             }
         });
 
-        imageViewPrior.setOnClickListener(new View.OnClickListener() {
+        fabPrior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!isOneChapter){

@@ -12,4 +12,5 @@
     <color name="toolbarAccent">#FFF</color>
     <color name="selectColor">#DEE185</color>
     <color name="colorNormalWhite_DarkBlack">#FFF</color>
+    <color name="fabBgColor">#FFF</color>
 </resources>

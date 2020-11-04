@@ -170,37 +170,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,AudioActivity.class);
                 startActivity(intent);
-                /*String toDayFormated=getToDayFormated(new Date());
-                CollectionReference colRef=db.collection("ExhoMatin");
-                DocumentReference docRef=colRef.document(toDayFormated);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if(document.exists()){
-                                Intent intent = new Intent(MainActivity.this,AudioActivity.class);
-                                intent.putExtra("audio_url",document.getString("audio_url"));
-                                startActivity(intent);
-                            } else {
-                                final String msg="L'exhortation du jour n'est pas encore disponible";
-                                Toast.makeText(MainActivity.this,msg,Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-                });*/
             }
+        });
 
-            private String getToDayFormated(Date date) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                String dateStr = sdf.format(date);
-                return dateStr;
+        llExhortationSoir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this,"Pas encore disponible",Toast.LENGTH_LONG).show();
             }
         });
 
         btnDons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,DonsActivity.class));
 
             }
         });

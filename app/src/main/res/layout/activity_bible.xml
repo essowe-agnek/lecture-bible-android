@@ -10,28 +10,34 @@
     <include layout="@layout/app_bar"
         android:id="@+id/bible_appbar"/>
 
-    <ImageView
-        android:id="@+id/imageView_bible_prior"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_bible_prior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ic_prior"
+        app:srcCompat="@drawable/ic_prior"
+        android:backgroundTint="@color/fabBgColor"
+        android:tint="#C0C0C0"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bible_appbar"
-        android:tint="@color/color_yellow"/>
+        app:layout_constraintTop_toBottomOf="@id/bible_appbar" />
 
-    <ImageView
-        android:id="@+id/imageView_bible_next"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_bible_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:src="@drawable/ic_next"
+        app:srcCompat="@drawable/ic_next"
+        android:backgroundTint="@color/fabBgColor"
+        android:tint="#C0C0C0"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:tint="@color/color_yellow"
         app:layout_constraintTop_toBottomOf="@+id/bible_appbar" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -44,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView_bible_prior" />
+        app:layout_constraintTop_toBottomOf="@id/fab_bible_prior" />
 
     <TextView
         android:id="@+id/tv_bible_chapter"
@@ -57,7 +63,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView_bible_prior" />
+        app:layout_constraintTop_toTopOf="@+id/fab_bible_prior" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bible_bottom_navigation"
