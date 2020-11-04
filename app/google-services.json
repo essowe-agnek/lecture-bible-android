@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1084823055552:android:41cf45b72ebed3fa235125",
+        "mobilesdk_app_id": "1:1084823055552:android:26b78ac117af5091235125",
         "android_client_info": {
-          "package_name": "com.agnekdev.planlecturebible"
+          "package_name": "com.bss.bibleunan"
         }
       },
       "oauth_client": [
