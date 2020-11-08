@@ -6,36 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".AudioActivity">
 
-    <include layout="@layout/app_bar"
-        android:id="@+id/audio_appbar"/>
-
-    <Button
-        android:id="@+id/btn_play"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/button_bible_border"
-        android:text="JOUER "
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/audio_appbar" />
-
     <ProgressBar
         android:id="@+id/play_progressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_appbar" />
+
+    <com.example.jean.jcplayer.view.JcPlayerView
+        android:id="@+id/jcplayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fabBgColor"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_play"
-        tools:visibility="gone" />
+        app:next_icon_color="@color/textColor"
+        app:pause_icon_color="@color/textColor"
+        app:play_icon_color="@color/textColor"
+        app:previous_icon_color="@color/textColor"
+        app:progress_color="#00FF00"
+        app:random_icon_color="@color/textColor"
+        app:repeat_icon_color="@color/textColor"
+        app:seek_bar_color="#00FF00"
+        app:text_audio_current_duration_color="@color/textColor"
+        app:text_audio_duration_color="@color/textColor"
+        app:text_audio_title_color="@color/textColor" />
+
+    <include
+        android:id="@+id/audio_appbar"
+        layout="@layout/app_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:clickable="true"
+        android:visibility="invisible"
+        app:backgroundTint="#059FAF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_appbar"
+        app:srcCompat="@drawable/ic_download" />
+
+    <TextView
+        android:id="@+id/audio_tv_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="155dp"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_appbar" />
+
+    <ImageView
+        android:id="@+id/audio_im_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_appbar"
+        app:srcCompat="@mipmap/ic_success" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
