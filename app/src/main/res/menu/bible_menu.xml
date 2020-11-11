@@ -5,9 +5,19 @@
     <item android:id="@+id/bible_menu_item_seach"
         android:title="recherche"
         android:icon="@drawable/ic_search"
-        app:iconTint="@color/bgColor"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item android:id="@+id/bible_menu_item_speech"
+        android:title="Ecouter"
+        android:icon="@drawable/ic_speech"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/bible_menu_item_stop"
+        android:title="Arrêter"
+        android:icon="@drawable/ic_stop"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
 
 
 </menu>

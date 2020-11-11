@@ -5,13 +5,18 @@
     <item
         android:id="@+id/main_menu_item_share"
         android:title="Partager"
+        app:iconTint="#fff"
         android:icon="@drawable/ic_share"
-        app:iconTint="@color/bgColor"
         app:showAsAction="ifRoom"/>
 
         <item android:id="@+id/main_menu_item_mode"
             android:title="Changer de mode"
             android:icon="@drawable/ic_mode"
-            app:iconTint="@color/bgColor"
             app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/main_menu_item_stop"
+        android:title="Arrêter"
+        android:icon="@drawable/ic_stop"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
 </menu>

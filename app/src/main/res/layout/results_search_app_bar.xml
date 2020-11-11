@@ -44,7 +44,7 @@
             android:id="@+id/search_bible_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorNormalWhite_DarkBlack" />
+            android:textColor="@android:color/white" />
 
 
     </LinearLayout>
@@ -73,7 +73,7 @@
             android:id="@+id/search_bible_verse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorNormalWhite_DarkBlack" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

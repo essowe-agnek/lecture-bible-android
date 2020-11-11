@@ -4,12 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgSecColor"
     tools:context=".TestamentsActivity">
-
-    <include
-        android:id="@+id/testaments_appbar"
-        layout="@layout/app_bar" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -139,5 +134,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <include
+        android:id="@+id/testaments_appbar"
+        layout="@layout/app_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -85,7 +85,7 @@
                     android:id="@+id/imageView_audio_matin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/audio_icone" />
+                    app:srcCompat="@mipmap/ic_audio" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -115,7 +115,7 @@
                     android:id="@+id/imageView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/read_icone" />
+                    app:srcCompat="@mipmap/ic_read" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -209,7 +209,7 @@
                     android:id="@+id/imageView_audio_soir"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/audio_icone" />
+                    app:srcCompat="@mipmap/ic_audio" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -241,7 +241,7 @@
                     android:id="@+id/imageView7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/read_icone" />
+                    app:srcCompat="@mipmap/ic_read" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -290,7 +290,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_border"
             android:text="faire un don"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#FF0000"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/cardView6"
             app:layout_constraintHorizontal_bias="0.0"
@@ -303,6 +303,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bottom_nav_border"
             android:elevation="5dp"
+            app:itemIconTint="@color/textColor"
+            app:labelVisibilityMode="labeled"
+            app:itemTextColor="@color/textColor"
 
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"

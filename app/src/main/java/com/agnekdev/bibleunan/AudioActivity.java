@@ -8,14 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -56,6 +54,7 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
     FloatingActionButton fab;
     TextView mDownload;
     ImageView imageViewSuccess;
+    TextView mExhoTitle;
 
     String fileName;
 
@@ -70,6 +69,9 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
         fab=findViewById(R.id.fab_download);
         mDownload = findViewById(R.id.audio_tv_download);
         imageViewSuccess = findViewById(R.id.audio_im_success);
+        mExhoTitle = findViewById(R.id.audio_tv_exho_title);
+
+        mExhoTitle.setText(getExhortationTitle());
 
         jcPlayerView.setJcPlayerManagerListener(this);
 
@@ -90,6 +92,11 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
         });
     }
 
+    private String getExhortationTitle() {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM Y");
+        return "Exhortation du "+sdf.format(new Date());
+    }
+
     private void checkAudioAvailable() {
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         CollectionReference colRef = db.collection("ExhoMatin");
@@ -106,7 +113,6 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
                            imageViewSuccess.setVisibility(View.VISIBLE);
                            initJcPlayer(audioName);
                            fab.hide();
-
                        } else {
                            mDownload.setText("Veuillez télécharger");
                            fab.show();
@@ -261,9 +267,18 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
         return dayMonth;
     }
 
-    static String getCurrentDateFormated(){
+    String getCurrentDateFormated(){
+        String response=null;
+        Intent intent = getIntent();
+        String origine= intent.getStringExtra("origine");
         SimpleDateFormat sdf = new SimpleDateFormat("Y-MM-dd");
-        return sdf.format(new Date());
+        if(origine.equals("liste")){
+            response = intent.getStringExtra("date_sent");
+        } else {
+            response = sdf.format(new Date());
+        }
+
+        return response;
     }
 
     @Override

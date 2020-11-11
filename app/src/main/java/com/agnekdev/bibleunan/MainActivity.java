@@ -2,6 +2,7 @@ package com.agnekdev.bibleunan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LinearLayout llAudioSoir;
     LinearLayout llExhortationMatin;
     LinearLayout llExhortationSoir;
+    ImageView imageViewAudioMatin;
+    ImageView imageViewAudioSoir;
+
+    private Menu menu;
 
     private ArrayList<String> chaptersAndVerses;
     private String eviningBook;
@@ -96,9 +102,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView = findViewById(R.id.main_bottom_navigation);
         btnDons = findViewById(R.id.btn_main_don);
         btnReadBible = findViewById(R.id.btn_read_bible);
+        imageViewAudioMatin = findViewById(R.id.imageView_audio_matin);
+        imageViewAudioSoir = findViewById(R.id.imageView_audio_soir);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Plan de lecture Bible");
+
+        bottomNavigationView.getMenu().getItem(0).setChecked(false);
+
 
         configureDrawerLayout();
         configureNavigationView();
@@ -118,14 +129,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         llAudioMatin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textToSpeech.speak(getPassage("nt"),TextToSpeech.QUEUE_FLUSH,null);
+                if(!textToSpeech.isSpeaking()){
+                    imageViewAudioMatin.setImageResource(R.mipmap.ic_stop_big);
+                    myTextToSpeech("nt");
+                } else {
+                    imageViewAudioMatin.setImageResource(R.mipmap.ic_audio);
+                    textToSpeech.stop();
+
+                }
+//                menu.findItem(R.id.main_menu_item_share).setVisible(false);
+//                menu.findItem(R.id.main_menu_item_stop).setVisible(true);
+
             }
         });
 
         llAudioSoir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textToSpeech.speak(getPassage("ot"),TextToSpeech.QUEUE_FLUSH,null);
+                if(!textToSpeech.isSpeaking()){
+                    imageViewAudioSoir.setImageResource(R.mipmap.ic_stop_big);
+                    myTextToSpeech("ot");
+                } else {
+                    imageViewAudioSoir.setImageResource(R.mipmap.ic_audio);
+                    textToSpeech.stop();
+
+                }
             }
         });
 
@@ -169,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,AudioActivity.class);
+                intent.putExtra("origine","today");
                 startActivity(intent);
             }
         });
@@ -240,6 +269,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void myTextToSpeech (String testament){
+        List<Bible> bibleList= new ArrayList<>();
+        String book = testament.equals("ot") ? lecture1.getLivreSoir():lecture1.getLivreMatin();
+        List<String> chaptersList=
+                testament.equals("ot") ? getChapters(lecture1.getChapitreSoir()):getChapters(lecture1.getChapitreMatin());
+        switch (chaptersList.size()){
+            case 1:
+                int chapter = Integer.parseInt(chaptersList.get(0));
+                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter, testament);
+                break;
+
+            case 2:
+                int chapterStart = Integer.parseInt(chaptersList.get(0));
+                int chapterEnd = Integer.parseInt(chaptersList.get(1));
+                bibleList = Bible.getManyChapters(MainActivity.this,book,chapterStart,chapterEnd,testament);
+                break;
+
+            case 3:
+                chapter = Integer.parseInt(chaptersList.get(0));
+                int verseStart = Integer.parseInt(chaptersList.get(1));
+                int verseEnd = Integer.parseInt(chaptersList.get(2));
+                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter,verseStart,verseEnd,testament);
+                break;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        // Le passage
+        stringBuilder.append(book);
+        int inc=0;
+        for(String strChapter:chaptersList){
+            ++inc;
+            stringBuilder.append(chaptersList.size()==inc ? strChapter+"." : strChapter+",");
+        }
+        textToSpeech.speak(stringBuilder.toString(),TextToSpeech.QUEUE_ADD,null);
+        for(Bible bible:bibleList){
+            textToSpeech.speak(bible.getVerseText(),TextToSpeech.QUEUE_ADD,null);
+        }
+    }
+
     String getPassage(String testament){
         List<Bible> bibleList= new ArrayList<>();
         String book = testament.equals("ot") ? lecture1.getLivreSoir():lecture1.getLivreMatin();
@@ -268,8 +336,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StringBuilder stringBuilder = new StringBuilder();
         // Le passage
         stringBuilder.append(book);
+        int inc=0;
         for(String strChapter:chaptersList){
-            stringBuilder.append(strChapter+",");
+            ++inc;
+            stringBuilder.append(chaptersList.size()==inc ? strChapter+"." : strChapter+",");
         }
         for(Bible bible:bibleList){
             stringBuilder.append(bible.getVerseText());
@@ -283,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu=menu;
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -317,6 +388,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sendIntent.setType("text/plain");
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
                 startActivity(shareIntent);
+                break;
+
+            case R.id.main_menu_item_stop:
+                textToSpeech.stop();
+                menu.findItem(R.id.main_menu_item_share).setVisible(true);
+                menu.findItem(R.id.main_menu_item_stop).setVisible(false);
                 break;
         }
         return super.onOptionsItemSelected(item);

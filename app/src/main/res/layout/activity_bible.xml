@@ -46,7 +46,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:background="@color/bgSecColor"
-        app:layout_constraintBottom_toTopOf="@+id/bible_bottom_navigation"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="8dp"
-        android:textColor="@color/color_yellow"
+        android:textColor="@color/textColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,13 +71,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_nav_border"
         android:elevation="5dp"
-
         android:visibility="gone"
+        app:itemIconTint="@color/textColor"
+        app:itemTextColor="@color/textColor"
+
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bible_bottom_navigation_menu" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
