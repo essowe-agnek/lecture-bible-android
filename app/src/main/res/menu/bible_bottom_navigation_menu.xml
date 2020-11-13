@@ -13,11 +13,5 @@
         android:icon="@android:drawable/ic_menu_share"
         android:title="Partager" />
 
-    <item
-        android:id="@+id/bible_bottom_navigation_menuitem_favory"
-        android:enabled="true"
-        android:icon="@drawable/ic_favory"
-        android:title="Ajouter aux favoris" />
-
 
 </menu>

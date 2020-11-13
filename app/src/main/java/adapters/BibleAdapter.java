@@ -119,9 +119,6 @@ public class BibleAdapter extends RecyclerView.Adapter<BibleAdapter.BibleHolder>
                         mActivity.startActivity(shareIntent);
                         break;
 
-                    case R.id.bible_bottom_navigation_menuitem_favory:
-                        Functions.agnekLog("favories");
-                        break;
                 }
                 return false;
             }

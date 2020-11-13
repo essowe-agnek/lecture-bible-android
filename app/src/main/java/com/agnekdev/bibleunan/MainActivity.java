@@ -410,6 +410,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.navigation_item_tout_leplan:
                 startActivity(new Intent(MainActivity.this,ListeLectureActivity.class));
+                break;
+
+            case R.id.navigation_item_bible:
+                startActivity(new Intent(MainActivity.this,TestamentsActivity.class));
+                break;
         }
         return true;
     }

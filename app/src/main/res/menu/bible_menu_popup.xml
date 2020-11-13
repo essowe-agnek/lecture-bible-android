@@ -8,8 +8,6 @@
     <item android:id="@+id/bible_menu_item_copy"
         android:title="Copier" />
 
-    <item android:id="@+id/bible_menu_item_add_to_favory"
-        android:title="Ajouter aux favoris"/>
     <item android:id="@+id/bible_menu_item_highlight"
         android:title="Surligner"/>
 

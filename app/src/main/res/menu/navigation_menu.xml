@@ -6,8 +6,11 @@
         android:icon="@drawable/ic_action_settings"/>
 
     <item android:id="@+id/navigation_item_bible"
-        android:title="Lire la Bible"/>
+        android:title="Lire la Bible"
+        android:icon="@drawable/ic_bible2"/>
+
     <item android:id="@+id/navigation_item_tout_leplan"
-        android:title="Tout le plan"/>
+        android:title="Tout le plan"
+        android:icon="@drawable/ic_agenda"/>
 
 </menu>

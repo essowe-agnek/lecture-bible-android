@@ -15,5 +15,6 @@
         android:right="10dp"
         android:bottom="5dp"    >
     </padding>
+    <solid android:color="@color/bgSecColor"/>
 
 </shape>
