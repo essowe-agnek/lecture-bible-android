@@ -1,6 +1,7 @@
 package com.agnekdev.bibleunan;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,10 +11,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +42,7 @@ import models.Bible;
 import models.Lecture;
 import utilities.Functions;
 
+import static utilities.Functions.agnekLog;
 import static utilities.Functions.getChapters;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private FirebaseFirestore db;
 
+    private String eventOrigin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean isNightMode =shp.getBoolean("mode_night",false);
         AppCompatDelegate
                 .setDefaultNightMode(isNightMode?AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_NO);
+        getDelegate().applyDayNight();
 
 
         //Vérifier si la lecture est paramétrée
@@ -115,26 +125,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         configureNavigationView();
 
 
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                int result=textToSpeech.setLanguage(Locale.FRENCH);
-                if(result==TextToSpeech.LANG_MISSING_DATA ||
-                        result==TextToSpeech.LANG_NOT_SUPPORTED){
-                    Toast.makeText(getApplicationContext(),"Language not supported",Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        initTextToSpeech();
 
         llAudioMatin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                eventOrigin="matin";
                 if(!textToSpeech.isSpeaking()){
                     imageViewAudioMatin.setImageResource(R.mipmap.ic_stop_big);
                     myTextToSpeech("nt");
                 } else {
                     imageViewAudioMatin.setImageResource(R.mipmap.ic_audio);
                     textToSpeech.stop();
+                    //textToSpeech.shutdown();
 
                 }
 //                menu.findItem(R.id.main_menu_item_share).setVisible(false);
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         llAudioSoir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                eventOrigin="soir";
                 if(!textToSpeech.isSpeaking()){
                     imageViewAudioSoir.setImageResource(R.mipmap.ic_stop_big);
                     myTextToSpeech("ot");
@@ -248,10 +252,84 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    public Context setupTheme(Context context) {
+
+        SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isNightMode =shp.getBoolean("mode_night",false);
+        AppCompatDelegate
+                .setDefaultNightMode(isNightMode?AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_NO);
+
+        Resources res = context.getResources();
+        int mode = res.getConfiguration().uiMode;
+        Configuration config = new Configuration(res.getConfiguration());
+        config.uiMode = mode;
+        if (Build.VERSION.SDK_INT >= 17) {
+            context = context.createConfigurationContext(config);
+        } else {
+            res.updateConfiguration(config, res.getDisplayMetrics());
+        }
+        return context;
+    }
+
+    private void initTextToSpeech() {
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                int result=textToSpeech.setLanguage(Locale.FRENCH);
+                if(result==TextToSpeech.LANG_MISSING_DATA ||
+                        result==TextToSpeech.LANG_NOT_SUPPORTED){
+                    Toast.makeText(getApplicationContext(),"Language not supported",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+    }
+
+    private void myTextToSpeech (String testament){
+
+        List<Bible> bibleList= new ArrayList<>();
+        String book = testament.equals("ot") ? lecture1.getLivreSoir():lecture1.getLivreMatin();
+        String chapters =testament.equals("ot") ? lecture1.getChapitreSoir() : lecture1.getChapitreMatin();
+        List<String> chaptersList=
+                testament.equals("ot") ? getChapters(lecture1.getChapitreSoir()):getChapters(lecture1.getChapitreMatin());
+        switch (chaptersList.size()){
+            case 1:
+                int chapter = Integer.parseInt(chaptersList.get(0));
+                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter, testament);
+                break;
+
+            case 2:
+                int chapterStart = Integer.parseInt(chaptersList.get(0));
+                int chapterEnd = Integer.parseInt(chaptersList.get(1));
+                bibleList = Bible.getManyChapters(MainActivity.this,book,chapterStart,chapterEnd,testament);
+                break;
+
+            case 3:
+                chapter = Integer.parseInt(chaptersList.get(0).replaceAll("\\s",""));
+                int verseStart = Integer.parseInt(chaptersList.get(1).replaceAll("\\s",""));
+                int verseEnd = Integer.parseInt(chaptersList.get(2));
+                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter,verseStart,verseEnd,testament);
+                break;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        // Le passage
+        stringBuilder.append(book);
+        stringBuilder.append(chapters);
+
+        textToSpeech.speak(stringBuilder.toString(),TextToSpeech.QUEUE_ADD,null);
+        for(Bible bible:bibleList){
+            textToSpeech.speak(bible.getVerseText(),TextToSpeech.QUEUE_ADD,null);
+        }
+
+    }
+
     private void showTodayLecture() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE d MMMM");
         Date today= new Date();
         final String todayFormated=sdf.format(today);
+        agnekLog(todayFormated);
         mToday.setText(todayFormated);
 
         final int nombreAnnees = Functions.getNombreAnnees(getApplicationContext());
@@ -267,85 +345,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mLectureSoir.setText("Libre aujourd'hui");
         }
 
-    }
-
-    private void myTextToSpeech (String testament){
-        List<Bible> bibleList= new ArrayList<>();
-        String book = testament.equals("ot") ? lecture1.getLivreSoir():lecture1.getLivreMatin();
-        List<String> chaptersList=
-                testament.equals("ot") ? getChapters(lecture1.getChapitreSoir()):getChapters(lecture1.getChapitreMatin());
-        switch (chaptersList.size()){
-            case 1:
-                int chapter = Integer.parseInt(chaptersList.get(0));
-                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter, testament);
-                break;
-
-            case 2:
-                int chapterStart = Integer.parseInt(chaptersList.get(0));
-                int chapterEnd = Integer.parseInt(chaptersList.get(1));
-                bibleList = Bible.getManyChapters(MainActivity.this,book,chapterStart,chapterEnd,testament);
-                break;
-
-            case 3:
-                chapter = Integer.parseInt(chaptersList.get(0));
-                int verseStart = Integer.parseInt(chaptersList.get(1));
-                int verseEnd = Integer.parseInt(chaptersList.get(2));
-                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter,verseStart,verseEnd,testament);
-                break;
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        // Le passage
-        stringBuilder.append(book);
-        int inc=0;
-        for(String strChapter:chaptersList){
-            ++inc;
-            stringBuilder.append(chaptersList.size()==inc ? strChapter+"." : strChapter+",");
-        }
-        textToSpeech.speak(stringBuilder.toString(),TextToSpeech.QUEUE_ADD,null);
-        for(Bible bible:bibleList){
-            textToSpeech.speak(bible.getVerseText(),TextToSpeech.QUEUE_ADD,null);
-        }
-    }
-
-    String getPassage(String testament){
-        List<Bible> bibleList= new ArrayList<>();
-        String book = testament.equals("ot") ? lecture1.getLivreSoir():lecture1.getLivreMatin();
-        List<String> chaptersList=
-                testament.equals("ot") ? getChapters(lecture1.getChapitreSoir()):getChapters(lecture1.getChapitreMatin());
-        switch (chaptersList.size()){
-            case 1:
-                int chapter = Integer.parseInt(chaptersList.get(0));
-                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter, testament);
-                break;
-
-            case 2:
-                int chapterStart = Integer.parseInt(chaptersList.get(0));
-                int chapterEnd = Integer.parseInt(chaptersList.get(1));
-                bibleList = Bible.getManyChapters(MainActivity.this,book,chapterStart,chapterEnd,testament);
-                break;
-
-            case 3:
-                chapter = Integer.parseInt(chaptersList.get(0));
-                int verseStart = Integer.parseInt(chaptersList.get(1));
-                int verseEnd = Integer.parseInt(chaptersList.get(2));
-                bibleList = Bible.getOneChapter(MainActivity.this, book, chapter,verseStart,verseEnd,testament);
-                break;
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        // Le passage
-        stringBuilder.append(book);
-        int inc=0;
-        for(String strChapter:chaptersList){
-            ++inc;
-            stringBuilder.append(chaptersList.size()==inc ? strChapter+"." : strChapter+",");
-        }
-        for(Bible bible:bibleList){
-            stringBuilder.append(bible.getVerseText());
-        }
-
-        return stringBuilder.toString();
     }
 
     // override methods *******************************************************
@@ -434,6 +433,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             showTodayLecture();
         }
+        SharedPreferences shpf =PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        float rate = (float) shpf.getInt("audio_rate",100)/100;
+        textToSpeech.setSpeechRate(rate);
+        textToSpeech.setPitch(rate);
     }
 
     @Override
@@ -471,5 +474,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if(textToSpeech!=null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
 
 }

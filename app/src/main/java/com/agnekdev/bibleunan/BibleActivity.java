@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,7 +81,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        checkTextToSpeech();
+        initTextToSpeech();
 
         bibleList=showBibleContent();
 
@@ -152,7 +154,7 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
 
     }
 
-    private void checkTextToSpeech() {
+    private void initTextToSpeech() {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
@@ -163,16 +165,8 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
                 }
             }
         });
-    }
 
-    private void bibleTextToSpeech(){
 
-        StringBuilder stringBuilder = new StringBuilder();
-        for(Bible bible:bibleList){
-            stringBuilder.append(bible.getVerseText());
-        }
-        Functions.agnekLog(stringBuilder.toString());
-        textToSpeech.speak(stringBuilder.toString(),TextToSpeech.QUEUE_FLUSH,null);
     }
 
     public  List<Bible> showBibleContent() {
@@ -321,7 +315,21 @@ public class BibleActivity extends AppCompatActivity  implements ColorPickerDial
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         Bible.setNbSelected(0);
+        if(textToSpeech!=null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+
+    }
+
+    @Override
+    protected void onResume() {
+        SharedPreferences shpf = PreferenceManager.getDefaultSharedPreferences(BibleActivity.this);
+        float rate = (float) shpf.getInt("audio_rate",100)/100;
+        textToSpeech.setSpeechRate(rate);
+        textToSpeech.setPitch(rate);
+        super.onResume();
     }
 }

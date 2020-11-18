@@ -15,5 +15,12 @@
         app:entries="@array/les_plans"
         app:entryValues="@array/valeurs_plans" />
 
+    <SeekBarPreference
+        android:defaultValue="100"
+        android:key="audio_rate"
+        android:max="100"
+        android:title="Vitesse lecture audio"
+        app:seekBarIncrement="10"/>
+
 
 </androidx.preference.PreferenceScreen>

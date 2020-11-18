@@ -93,7 +93,7 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
     }
 
     private String getExhortationTitle() {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM Y");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM yyyy");
         return "Exhortation du "+sdf.format(new Date());
     }
 
@@ -271,7 +271,7 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
         String response=null;
         Intent intent = getIntent();
         String origine= intent.getStringExtra("origine");
-        SimpleDateFormat sdf = new SimpleDateFormat("Y-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if(origine.equals("liste")){
             response = intent.getStringExtra("date_sent");
         } else {
