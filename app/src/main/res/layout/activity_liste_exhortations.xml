@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ListeExhortationsActivity">
+
+    <include
+        layout="@layout/app_bar"
+        android:id="@+id/list_exho_appbar"/>
+
+    <Spinner
+        android:id="@+id/list_exho_spinner_month"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:entries="@array/les_mois"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_exho_appbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_exho_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="120dp"
+        app:layout_constraintBottom_toBottomOf="@id/list_exho_jcplayer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list_exho_spinner_month" />
+
+    <com.example.jean.jcplayer.view.JcPlayerView
+        android:id="@+id/list_exho_jcplayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fabBgColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:next_icon_color="@color/textColor"
+        app:pause_icon_color="@color/textColor"
+        app:play_icon_color="@color/textColor"
+        app:previous_icon_color="@color/textColor"
+        app:progress_color="#00FF00"
+        app:random_icon_color="@color/textColor"
+        app:repeat_icon_color="@color/textColor"
+        app:seek_bar_color="#00FF00"
+        app:text_audio_current_duration_color="@color/textColor"
+        app:text_audio_duration_color="@color/textColor"
+        app:text_audio_title_color="@color/textColor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

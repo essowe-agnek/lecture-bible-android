@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
     TextView mDownload;
     ImageView imageViewSuccess;
     TextView mExhoTitle;
+    Button btnExhortations;
 
     String fileName;
 
@@ -70,6 +72,7 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
         mDownload = findViewById(R.id.audio_tv_download);
         imageViewSuccess = findViewById(R.id.audio_im_success);
         mExhoTitle = findViewById(R.id.audio_tv_exho_title);
+        btnExhortations = findViewById(R.id.btn_show_exhortations);
 
         mExhoTitle.setText(getExhortationTitle());
 
@@ -88,6 +91,13 @@ public class AudioActivity extends AppCompatActivity implements JcPlayerManagerL
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        btnExhortations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AudioActivity.this,ListeExhortationsActivity.class));
             }
         });
     }

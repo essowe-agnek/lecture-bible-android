@@ -21,6 +21,7 @@ public class Lecture {
     private int nombreAnnees;
     private int rangAnnee;
     private String mois;
+    private int jour2;
 
     public Lecture(Cursor cursor){
         this.id=cursor.getInt(cursor.getColumnIndex("ID"));
@@ -32,6 +33,7 @@ public class Lecture {
         this.nombreAnnees=cursor.getInt(cursor.getColumnIndex("NB_ANNEE"));
         this.rangAnnee=cursor.getInt(cursor.getColumnIndex("RANG_ANNEE"));
         this.mois=cursor.getString(cursor.getColumnIndex("MOIS"));
+        this.jour2 = cursor.getInt(cursor.getColumnIndex("JOUR2"));
     }
 
     public long getId() {
@@ -106,10 +108,63 @@ public class Lecture {
         this.mois = mois;
     }
 
+    public int getJour2() {
+        return jour2;
+    }
 
+    public void setJour2(int jour2) {
+        this.jour2 = jour2;
+    }
     //****************************************************************************************
 
     public static Lecture getTodayLecture(Context context, int nombreAnnees, int rangAnnee){
+        MyDatabaseHelper myDatabaseHelper= new MyDatabaseHelper(context);
+        SQLiteDatabase database= myDatabaseHelper.getReadableDatabase();
+        String query="";
+        Cursor cursor=null;
+
+        switch (nombreAnnees){
+            case 1:
+                query = "SELECT *, 1 AS NB_ANNEE,1 AS RANG_ANNEE FROM lecture where MOIS=? AND JOUR2=?";
+                String[] args1 ={Functions.getCurrentMonthNumber(),String.valueOf(Functions.getcurrentDayNumberInMonth())};
+                cursor = database.rawQuery(query,args1);
+                break;
+
+            case 2:
+                query ="SELECT ln.ID,ln.MOIS,ln.JOUR,ln.JOUR2,l.livre_matin,l.CHAPITRE_MATIN,b.name_fr " +
+                        "AS LIVRE_SOIR,ln.CHAPITRE_SOIR,ln.NB_ANNEE,ln.RANG_ANNEE " +
+                        "FROM lecture_2ans ln JOIN lecture l ON ln.JOUR=l.JOUR " +
+                        "LEFT JOIN book_en b ON ln.livre_soir=b.name_en " +
+                        "WHERE ln.MOIS=? AND ln.JOUR2=? AND ln.RANG_ANNEE=?";
+                String[] args2 = {Functions.getCurrentMonthNumber(),
+                        String.valueOf(Functions.getcurrentDayNumberInMonth()),
+                        String.valueOf(rangAnnee)};
+                cursor=database.rawQuery(query,args2);
+                break;
+
+            case 3:
+                query ="SELECT ln.ID,ln.MOIS,ln.JOUR,ln.JOUR2,l.livre_matin,l.CHAPITRE_MATIN,b.name_fr " +
+                        "AS LIVRE_SOIR,ln.CHAPITRE_SOIR,ln.NB_ANNEE,ln.RANG_ANNEE " +
+                        "FROM lecture_3ans ln JOIN lecture l ON ln.JOUR=l.JOUR " +
+                        "LEFT JOIN book_en b ON ln.livre_soir=b.name_en " +
+                        "WHERE ln.MOIS=? AND ln.JOUR2=? AND ln.RANG_ANNEE=?";
+                String[] args3 = {Functions.getCurrentMonthNumber(),
+                        String.valueOf(Functions.getcurrentDayNumberInMonth()),
+                        String.valueOf(rangAnnee)};
+                cursor=database.rawQuery(query,args3);
+                break;
+        }
+
+        Lecture lecture=null;
+        if(cursor.moveToFirst()){
+            lecture = new Lecture(cursor);
+        }
+        cursor.close();
+        database.close();
+        return lecture;
+    }
+
+    public static Lecture getTodayLecture_old(Context context, int nombreAnnees, int rangAnnee){
         MyDatabaseHelper myDatabaseHelper= new MyDatabaseHelper(context);
         SQLiteDatabase database= myDatabaseHelper.getReadableDatabase();
         String query="";
@@ -226,7 +281,7 @@ public class Lecture {
 
             case 2:
                 String[] args2 = {month,String.valueOf(rangAnnee)};
-                query ="SELECT ln.ID,ln.MOIS,ln.JOUR,l.livre_matin,l.CHAPITRE_MATIN,b.name_fr " +
+                query ="SELECT ln.ID,ln.MOIS,ln.JOUR,ln.JOUR2,l.livre_matin,l.CHAPITRE_MATIN,b.name_fr " +
                         "AS LIVRE_SOIR,ln.CHAPITRE_SOIR,ln.NB_ANNEE,ln.RANG_ANNEE " +
                         "FROM lecture_2ans ln JOIN lecture l ON ln.JOUR=l.JOUR " +
                         "LEFT JOIN book_en b ON ln.livre_soir=b.name_en " +
@@ -236,7 +291,7 @@ public class Lecture {
 
             case 3:
                 String[] args3 = {month,String.valueOf(rangAnnee)};
-                query ="SELECT ln.ID,ln.MOIS,ln.JOUR,l.livre_matin,l.CHAPITRE_MATIN,b.name_fr " +
+                query ="SELECT ln.ID,ln.MOIS,ln.JOUR,ln.JOUR2,l.livre_matin,l.CHAPITRE_MATIN,b.name_fr " +
                         "AS LIVRE_SOIR,ln.CHAPITRE_SOIR,ln.NB_ANNEE,ln.RANG_ANNEE " +
                         "FROM lecture_3ans ln JOIN lecture l ON ln.JOUR=l.JOUR " +
                         "LEFT JOIN book_en b ON ln.livre_soir=b.name_en " +

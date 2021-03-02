@@ -329,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE d MMMM");
         Date today= new Date();
         final String todayFormated=sdf.format(today);
-        agnekLog(todayFormated);
         mToday.setText(todayFormated);
 
         final int nombreAnnees = Functions.getNombreAnnees(getApplicationContext());
@@ -339,6 +338,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         passagesSoir =lecture1.getLivreSoir()+" "+lecture1.getChapitreSoir();
         passagesMatin =lecture1.getLivreMatin()+" "+lecture1.getChapitreMatin();
         mLectureMatin.setText("Matin: "+passagesMatin);
+
+        agnekLog(" le jour:"+String.valueOf(lecture1.getJour2()));
         if(lecture1.getLivreSoir()!=null){
             mLectureSoir.setText("Soir: "+ passagesSoir);
         } else {

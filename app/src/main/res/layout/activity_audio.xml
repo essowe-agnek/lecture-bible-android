@@ -50,13 +50,13 @@
         android:id="@+id/fab_download"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:visibility="invisible"
         app:backgroundTint="#059FAF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/audio_appbar"
+        app:layout_constraintTop_toBottomOf="@+id/play_progressBar"
         app:srcCompat="@drawable/ic_download" />
 
     <TextView
@@ -75,11 +75,12 @@
         android:id="@+id/audio_im_success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/audio_appbar"
+        app:layout_constraintTop_toBottomOf="@+id/fab_download"
         app:srcCompat="@mipmap/ic_success" />
 
     <TextView
@@ -90,6 +91,18 @@
         app:layout_constraintBottom_toTopOf="@+id/jcplayer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_show_exhortations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_bible_border"
+        android:text="VOIR TOUTES LES EXHORTATIONS"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audio_tv_download" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,6 +29,20 @@ public abstract class Functions {
         Date today = new Date();
         String todayFormated =sdf.format(today);
         return todayFormated;
+    }
+    // obtenir le numéro du jour dans le mois par exemple 31
+    public static int getcurrentDayNumberInMonth(){
+        SimpleDateFormat sdf = new SimpleDateFormat("d");
+        Date today = new Date();
+        String todayFormated =sdf.format(today);
+        return Integer.parseInt(todayFormated);
+    }
+
+    // Obtenir le numéro du mois actuel
+    public static String getCurrentMonthNumber(){
+
+        int currentMonthNumber= Calendar.getInstance().get(Calendar.MONTH)+1;
+        return  String.valueOf(currentMonthNumber);
     }
 
     public static int getNombreAnnees(Context context){
