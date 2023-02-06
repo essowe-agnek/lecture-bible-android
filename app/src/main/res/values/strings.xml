@@ -71,4 +71,13 @@
         <item>Décembre</item>
     </string-array>
 
+    <string name="groupe_wap">
+        Vous souhaitez
+            <p>écouter les exhortations,</p>
+            <p>bénéficier des prièresc
+            <p>et avoir accès aux secrets pour manifester toutes les catégories de bénédictions que Dieu a donné au chrétiens ?</p>
+            Un groupe WhatsApp a été créé. Vous pourrez envoyez des sujets de prière et Jésus va trouver solution à vos fardeaux.</p>
+
+    </string>
+
 </resources>

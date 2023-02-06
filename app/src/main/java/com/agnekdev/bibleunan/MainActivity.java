@@ -200,8 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         llExhortationMatin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,AudioActivity.class);
-                intent.putExtra("origine","today");
+                Intent intent = new Intent(MainActivity.this,ExhortationActivity.class);
                 startActivity(intent);
             }
         });
@@ -209,7 +208,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         llExhortationSoir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this,"Pas encore disponible",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this,ExhortationActivity.class);
+                startActivity(intent);
             }
         });
 
