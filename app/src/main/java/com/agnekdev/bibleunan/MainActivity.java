@@ -1,7 +1,6 @@
 package com.agnekdev.bibleunan;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,14 +11,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -250,6 +251,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(MainActivity.this,TestamentsActivity.class));
             }
         });
+
+        // gestion message exhortation disponible
+        SharedPreferences shpf =getSharedPreferences("com.agnekdev.bibleunan.prefs",MODE_PRIVATE);
+        Boolean exho_deja = shpf.getBoolean("exho_deja",false);
+        if(exho_deja==false){
+            LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+            final View view = layoutInflater.inflate(R.layout.exhortation_dispo, null);
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Exhortation disponible");
+            alertDialog.setCancelable(false);
+
+            Button btnIntegrer = view.findViewById(R.id.btn_integrer_gp2);
+            btnIntegrer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences shpf =getSharedPreferences("com.agnekdev.bibleunan.prefs",MODE_PRIVATE);
+                    shpf.edit().putBoolean("exho_deja",true).commit();
+                    String url = "https://chat.whatsapp.com/ENf2YRVXISGBbLWqPuQ4AA";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    SharedPreferences shpf =getSharedPreferences("com.agnekdev.bibleunan.prefs",MODE_PRIVATE);
+                    shpf.edit().putBoolean("exho_deja",true).commit();
+                }
+            });
+            alertDialog.setView(view);
+            alertDialog.show();
+        }
+
     }
 
     public Context setupTheme(Context context) {
